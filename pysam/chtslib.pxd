@@ -548,6 +548,7 @@ cdef extern from "htslib/hts.h" nogil:
 
     void hts_idx_save(const hts_idx_t *idx, const char *fn, int fmt)
     hts_idx_t *hts_idx_load(const char *fn, int fmt)
+    hts_idx_t *hts_idx_load_literal(const char *fn, int fmt)
 
     uint8_t *hts_idx_get_meta(hts_idx_t *idx, int *l_meta)
     void hts_idx_set_meta(hts_idx_t *idx, int l_meta, uint8_t *meta, int is_copy)
