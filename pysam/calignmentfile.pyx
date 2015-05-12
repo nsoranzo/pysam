@@ -366,7 +366,8 @@ cdef class AlignmentFile:
               check_header=True,
               check_sq=True,
               referencenames=None,
-              referencelengths=None):
+              referencelengths=None,
+              index_filename=''):
         '''open a sam, bam or cram formatted file.
 
         If _open is called on an existing file, the current file
@@ -595,7 +596,14 @@ cdef class AlignmentFile:
                     warnings.warn(
                         "unable to open remote index for '%s'" % filename)
             else:
-                if self.is_bam \
+                if index_filename:
+                    self.index = hts_idx_load_literal(index_filename,
+                                                      format_index)
+                    if self.index == NULL:
+                        raise IOError(
+                            "error while opening alternate index for '%s' at '%s'" %
+                            filename, index_filename)
+                elif self.is_bam \
                    and not os.path.exists(filename + b".bai") \
                    and not os.path.exists(filename[:-4] + b".bai"):
                     self.index = NULL

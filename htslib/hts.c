@@ -1663,3 +1663,10 @@ hts_idx_t *hts_idx_load(const char *fn, int fmt)
     free(fnidx);
     return idx;
 }
+
+hts_idx_t *hts_idx_load_literal(const char *fn, int fmt)
+{
+    hts_idx_t *idx;
+    idx = hts_idx_load_local(fn, fmt);
+    return idx;
+}
