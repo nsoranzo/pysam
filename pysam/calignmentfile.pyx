@@ -602,7 +602,7 @@ cdef class AlignmentFile:
                     if self.index == NULL:
                         raise IOError(
                             "error while opening alternate index for '%s' at '%s'" %
-                            filename, index_filename)
+                            (filename, index_filename))
                 elif self.is_bam \
                    and not os.path.exists(filename + b".bai") \
                    and not os.path.exists(filename[:-4] + b".bai"):
