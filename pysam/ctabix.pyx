@@ -810,6 +810,9 @@ def tabix_index( filename,
                  meta_char = "#",
                  zerobased = False,
                  int min_shift = -1,
+                 index_filename = None,
+                 already_compressed = False,
+                 keep_original = False
                 ):
     '''index tab-separated *filename* using tabix.
 
@@ -847,7 +850,6 @@ def tabix_index( filename,
     returns the filename of the compressed data
 
     '''
-    
     if not os.path.exists(filename):
         raise IOError("No such file '%s'" % filename)
 
@@ -856,9 +858,10 @@ def tabix_index( filename,
         raise ValueError(
             "neither preset nor seq_col,start_col and end_col given")
 
-    if not filename.endswith(".gz"): 
+    if not already_compressed or filename.endswith(".gz"): 
         tabix_compress(filename, filename + ".gz", force=force)
-        os.unlink( filename )
+        if not keep_original:
+            os.unlink( filename )
         filename += ".gz"
 
     if not force and os.path.exists(filename + ".tbi"):
@@ -909,7 +912,8 @@ def tabix_index( filename,
     cdef char *cfn = fn
     with nogil:
         tbx_index_build(cfn, min_shift, &conf)
-    
+    if index_filename:
+        os.rename(filename+".tbi", index_filename)
     return filename
 
 # #########################################################
