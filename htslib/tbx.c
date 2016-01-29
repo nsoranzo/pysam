@@ -273,7 +273,7 @@ tbx_t *tbx_index_load(const char *fn)
     uint32_t x[7];
     int l_meta, l_nm;
     tbx = (tbx_t*)calloc(1, sizeof(tbx_t));
-    tbx->idx = hts_idx_load(fn, HTS_FMT_TBI);
+    tbx->idx = hts_idx_load_literal(fn, HTS_FMT_TBI);
     if ( !tbx->idx )
     {
         free(tbx);
