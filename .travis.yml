@@ -30,11 +30,17 @@ matrix:
       env:
         - CIBW_BEFORE_BUILD="yum install -y zlib-devel bzip2-devel xz-devel && pip install -r requirements.txt"
         - CIBW_ENVIRONMENT='HTSLIB_CONFIGURE_OPTIONS="--disable-libcurl"'
+      addons:
+        apt:
+          packages:
+            - libcurl4-openssl-dev
+            - libssl-dev
       <<: *deploy_common
       script:
         - set -e
         - cibuildwheel --output-dir dist
         - python3 -m pip install Cython
+        - python3 setup.py build_ext --inplace
         - python3 setup.py sdist
         - twine check dist/*
         - ls -lh dist/
@@ -53,12 +59,6 @@ matrix:
         - twine check dist/*
         - ls -lh dist/
         - twine upload --skip-existing dist/*
-
-addons:
-  apt:
-    packages:
-    - gcc
-    - g++
 
 script:
   # - ./devtools/run_tests_travis.sh
