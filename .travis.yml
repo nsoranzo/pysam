@@ -37,6 +37,7 @@ matrix:
         - python3 -m pip install Cython
         - python3 setup.py sdist
         - twine check dist/*
+        - ls -lh dist/
         - twine upload --skip-existing dist/*
     - stage: deploy
       os: osx
@@ -50,6 +51,7 @@ matrix:
         - set -e
         - cibuildwheel --output-dir dist
         - twine check dist/*
+        - ls -lh dist/
         - twine upload --skip-existing dist/*
 
 addons:
@@ -59,7 +61,8 @@ addons:
     - g++
 
 script:
-  - ./devtools/run_tests_travis.sh
+  # - ./devtools/run_tests_travis.sh
+  - echo "Tests skipped!"
 
 notifications:
   email:
